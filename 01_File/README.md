@@ -213,7 +213,7 @@ Hello world%
 
 ### Stat it
 
-Now that I have created my file I want to try to stat it. As per usual, there is a syscall and a manual entry:
+Now that I have created my file I want to try to stat it. As per usual, there is a syscall (`syscall.SYS_FSTAT`) and a manual entry:
 
 ```bash
 ❯ man "stat(2)"
@@ -358,3 +358,5 @@ I initially used a Stat struct from `ztypes_openbsd_amd64.go`, but the field ord
 # Wrapping up
 
 Writing a file myself with syscall was quite a fun experience, since I'm exploring areas that I don't often see in my day to day job. Once you get the hang of syscalls they are pretty straightforward to use, which is probably why most of the syscall functions does not have comments (on the other hand, it depends on the syscall you are trying to do, but I didn't know that when I started).
+
+The source code I used to create the file is in the same place as this README, so you can take a look if you'd like to.
