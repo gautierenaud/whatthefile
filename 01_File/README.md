@@ -6,7 +6,7 @@ First of all, what is a file? In this first entry, I will try to understand what
 
 Each of the points below should be correct for GNU/Linux, but I expect other OSes would have a similar implementation.
 
-* each file-system object (file, folder, ...) is represented as an **inode**
+* each file-system object (file, folder, ...) is represented as an **inode** (index + node)
 * we interact with a file through a **file descriptor**, which is a process specific index number that is used to track the file and the right associated to it
 ![Wikipedia: inode](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/File_table_and_inode_table.svg/1280px-File_table_and_inode_table.svg.png)
 * we use **syscalls** in order to interact with any file
@@ -121,7 +121,7 @@ One interesting thing to note is how I pass the `pathname` parameter to the sysc
 
 Then it is only a matter of copying the string's content into my byte array. It is interesting to note that copying a `string` to `[]byte` is a special case of `copy`, I wonder if this was made so for compatibility with lower level languages...
 
-After that it is only a matter of converting each parameter into the right type, using `unsafe.Pointer` to pass the pathname around. The Godoc for this function has a section specifically for sycall that reads:
+After that it is only a matter of converting each parameter into the right type, using `unsafe.Pointer` to pass the pathname around. The Godoc for this function has a section specifically for syscall that reads:
 
 > If a pointer argument must be converted to uintptr for use as an argument, that conversion must appear in the call expression itself
 
@@ -135,7 +135,7 @@ u := uintptr(unsafe.Pointer(p))
 syscall.Syscall(SYS_READ, uintptr(fd), u, uintptr(n))
 ```
 
-Hopefully, I implemented my file creation in the good way, so the Go police wont come to my home.
+Hopefully, I implemented my file creation in the good way, so the Go police won't come to my home.
 
 If I run my script, I can see the file created in the proper folder:
 ```bash
@@ -357,6 +357,6 @@ I initially used a Stat struct from `ztypes_openbsd_amd64.go`, but the field ord
 
 # Wrapping up
 
-Writing a file myself with syscall was quite a fun experience, since I'm exploring areas that I don't often see in my day to day job. Once you get the hang of syscalls they are pretty straightforward to use, which is probably why most of the syscall functions does not have comments (on the other hand, it depends on the syscall you are trying to do, but I didn't know that when I started).
+Writing a file myself with syscall was quite a fun experience, since I'm exploring areas that I don't often see in my day to day job. Once you get the hang of syscalls they are pretty straightforward to use, which is probably why most of the syscall functions don't have comments (on the other hand, it depends on the syscall you are trying to do, but I didn't know that when I started).
 
 The source code I used to create the file is in the same place as this README, so you can take a look if you'd like to.
